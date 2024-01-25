@@ -3,4 +3,5 @@ npx grpc_tools_node_protoc \
 --grpc_out=./src/protos/out \
 --ts_out=./src/protos/out \
 --proto_path=./src/protos/src \
-./src/protos/src/post/post.proto
+./src/protos/src/post/post.proto \
+&& cp -r ./src/protos/out ../client/src/protos
