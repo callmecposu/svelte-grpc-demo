@@ -78,6 +78,50 @@ export namespace CreatePostRequest {
     }
 }
 
+export class CreatePostsBulkRequest extends jspb.Message { 
+    clearSourceList(): void;
+    getSourceList(): Array<CreatePostRequest>;
+    setSourceList(value: Array<CreatePostRequest>): CreatePostsBulkRequest;
+    addSource(value?: CreatePostRequest, index?: number): CreatePostRequest;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): CreatePostsBulkRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: CreatePostsBulkRequest): CreatePostsBulkRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: CreatePostsBulkRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): CreatePostsBulkRequest;
+    static deserializeBinaryFromReader(message: CreatePostsBulkRequest, reader: jspb.BinaryReader): CreatePostsBulkRequest;
+}
+
+export namespace CreatePostsBulkRequest {
+    export type AsObject = {
+        sourceList: Array<CreatePostRequest.AsObject>,
+    }
+}
+
+export class CreatePostsBulkResponse extends jspb.Message { 
+    clearPostsList(): void;
+    getPostsList(): Array<Post>;
+    setPostsList(value: Array<Post>): CreatePostsBulkResponse;
+    addPosts(value?: Post, index?: number): Post;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): CreatePostsBulkResponse.AsObject;
+    static toObject(includeInstance: boolean, msg: CreatePostsBulkResponse): CreatePostsBulkResponse.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: CreatePostsBulkResponse, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): CreatePostsBulkResponse;
+    static deserializeBinaryFromReader(message: CreatePostsBulkResponse, reader: jspb.BinaryReader): CreatePostsBulkResponse;
+}
+
+export namespace CreatePostsBulkResponse {
+    export type AsObject = {
+        postsList: Array<Post.AsObject>,
+    }
+}
+
 export class TimestampFilter extends jspb.Message { 
     getComp(): Comparison;
     setComp(value: Comparison): TimestampFilter;

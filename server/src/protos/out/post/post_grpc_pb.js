@@ -16,6 +16,28 @@ function deserialize_postservice_CreatePostRequest(buffer_arg) {
   return post_post_pb.CreatePostRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_postservice_CreatePostsBulkRequest(arg) {
+  if (!(arg instanceof post_post_pb.CreatePostsBulkRequest)) {
+    throw new Error('Expected argument of type postservice.CreatePostsBulkRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_postservice_CreatePostsBulkRequest(buffer_arg) {
+  return post_post_pb.CreatePostsBulkRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_postservice_CreatePostsBulkResponse(arg) {
+  if (!(arg instanceof post_post_pb.CreatePostsBulkResponse)) {
+    throw new Error('Expected argument of type postservice.CreatePostsBulkResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_postservice_CreatePostsBulkResponse(buffer_arg) {
+  return post_post_pb.CreatePostsBulkResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_postservice_GetPostsRequest(arg) {
   if (!(arg instanceof post_post_pb.GetPostsRequest)) {
     throw new Error('Expected argument of type postservice.GetPostsRequest');
@@ -61,6 +83,17 @@ var PostServiceService = exports.PostServiceService = {
     requestDeserialize: deserialize_postservice_CreatePostRequest,
     responseSerialize: serialize_postservice_Post,
     responseDeserialize: deserialize_postservice_Post,
+  },
+  createPostsBulk: {
+    path: '/postservice.PostService/CreatePostsBulk',
+    requestStream: false,
+    responseStream: false,
+    requestType: post_post_pb.CreatePostsBulkRequest,
+    responseType: post_post_pb.CreatePostsBulkResponse,
+    requestSerialize: serialize_postservice_CreatePostsBulkRequest,
+    requestDeserialize: deserialize_postservice_CreatePostsBulkRequest,
+    responseSerialize: serialize_postservice_CreatePostsBulkResponse,
+    responseDeserialize: deserialize_postservice_CreatePostsBulkResponse,
   },
   getPosts: {
     path: '/postservice.PostService/GetPosts',

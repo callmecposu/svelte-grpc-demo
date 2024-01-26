@@ -10,6 +10,7 @@ import * as google_protobuf_timestamp_pb from "google-protobuf/google/protobuf/t
 
 interface IPostServiceService extends grpc.ServiceDefinition<grpc.UntypedServiceImplementation> {
     createPost: IPostServiceService_ICreatePost;
+    createPostsBulk: IPostServiceService_ICreatePostsBulk;
     getPosts: IPostServiceService_IGetPosts;
 }
 
@@ -21,6 +22,15 @@ interface IPostServiceService_ICreatePost extends grpc.MethodDefinition<post_pos
     requestDeserialize: grpc.deserialize<post_post_pb.CreatePostRequest>;
     responseSerialize: grpc.serialize<post_post_pb.Post>;
     responseDeserialize: grpc.deserialize<post_post_pb.Post>;
+}
+interface IPostServiceService_ICreatePostsBulk extends grpc.MethodDefinition<post_post_pb.CreatePostsBulkRequest, post_post_pb.CreatePostsBulkResponse> {
+    path: "/postservice.PostService/CreatePostsBulk";
+    requestStream: false;
+    responseStream: false;
+    requestSerialize: grpc.serialize<post_post_pb.CreatePostsBulkRequest>;
+    requestDeserialize: grpc.deserialize<post_post_pb.CreatePostsBulkRequest>;
+    responseSerialize: grpc.serialize<post_post_pb.CreatePostsBulkResponse>;
+    responseDeserialize: grpc.deserialize<post_post_pb.CreatePostsBulkResponse>;
 }
 interface IPostServiceService_IGetPosts extends grpc.MethodDefinition<post_post_pb.GetPostsRequest, post_post_pb.GetPostsResponse> {
     path: "/postservice.PostService/GetPosts";
@@ -36,6 +46,7 @@ export const PostServiceService: IPostServiceService;
 
 export interface IPostServiceServer {
     createPost: grpc.handleUnaryCall<post_post_pb.CreatePostRequest, post_post_pb.Post>;
+    createPostsBulk: grpc.handleUnaryCall<post_post_pb.CreatePostsBulkRequest, post_post_pb.CreatePostsBulkResponse>;
     getPosts: grpc.handleUnaryCall<post_post_pb.GetPostsRequest, post_post_pb.GetPostsResponse>;
 }
 
@@ -43,6 +54,9 @@ export interface IPostServiceClient {
     createPost(request: post_post_pb.CreatePostRequest, callback: (error: grpc.ServiceError | null, response: post_post_pb.Post) => void): grpc.ClientUnaryCall;
     createPost(request: post_post_pb.CreatePostRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: post_post_pb.Post) => void): grpc.ClientUnaryCall;
     createPost(request: post_post_pb.CreatePostRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: post_post_pb.Post) => void): grpc.ClientUnaryCall;
+    createPostsBulk(request: post_post_pb.CreatePostsBulkRequest, callback: (error: grpc.ServiceError | null, response: post_post_pb.CreatePostsBulkResponse) => void): grpc.ClientUnaryCall;
+    createPostsBulk(request: post_post_pb.CreatePostsBulkRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: post_post_pb.CreatePostsBulkResponse) => void): grpc.ClientUnaryCall;
+    createPostsBulk(request: post_post_pb.CreatePostsBulkRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: post_post_pb.CreatePostsBulkResponse) => void): grpc.ClientUnaryCall;
     getPosts(request: post_post_pb.GetPostsRequest, callback: (error: grpc.ServiceError | null, response: post_post_pb.GetPostsResponse) => void): grpc.ClientUnaryCall;
     getPosts(request: post_post_pb.GetPostsRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: post_post_pb.GetPostsResponse) => void): grpc.ClientUnaryCall;
     getPosts(request: post_post_pb.GetPostsRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: post_post_pb.GetPostsResponse) => void): grpc.ClientUnaryCall;
@@ -53,6 +67,9 @@ export class PostServiceClient extends grpc.Client implements IPostServiceClient
     public createPost(request: post_post_pb.CreatePostRequest, callback: (error: grpc.ServiceError | null, response: post_post_pb.Post) => void): grpc.ClientUnaryCall;
     public createPost(request: post_post_pb.CreatePostRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: post_post_pb.Post) => void): grpc.ClientUnaryCall;
     public createPost(request: post_post_pb.CreatePostRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: post_post_pb.Post) => void): grpc.ClientUnaryCall;
+    public createPostsBulk(request: post_post_pb.CreatePostsBulkRequest, callback: (error: grpc.ServiceError | null, response: post_post_pb.CreatePostsBulkResponse) => void): grpc.ClientUnaryCall;
+    public createPostsBulk(request: post_post_pb.CreatePostsBulkRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: post_post_pb.CreatePostsBulkResponse) => void): grpc.ClientUnaryCall;
+    public createPostsBulk(request: post_post_pb.CreatePostsBulkRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: post_post_pb.CreatePostsBulkResponse) => void): grpc.ClientUnaryCall;
     public getPosts(request: post_post_pb.GetPostsRequest, callback: (error: grpc.ServiceError | null, response: post_post_pb.GetPostsResponse) => void): grpc.ClientUnaryCall;
     public getPosts(request: post_post_pb.GetPostsRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: post_post_pb.GetPostsResponse) => void): grpc.ClientUnaryCall;
     public getPosts(request: post_post_pb.GetPostsRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: post_post_pb.GetPostsResponse) => void): grpc.ClientUnaryCall;

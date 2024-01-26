@@ -140,6 +140,67 @@ proto.postservice.PostServicePromiseClient.prototype.createPost =
 /**
  * @const
  * @type {!grpc.web.MethodDescriptor<
+ *   !proto.postservice.CreatePostsBulkRequest,
+ *   !proto.postservice.CreatePostsBulkResponse>}
+ */
+const methodDescriptor_PostService_CreatePostsBulk = new grpc.web.MethodDescriptor(
+  '/postservice.PostService/CreatePostsBulk',
+  grpc.web.MethodType.UNARY,
+  proto.postservice.CreatePostsBulkRequest,
+  proto.postservice.CreatePostsBulkResponse,
+  /**
+   * @param {!proto.postservice.CreatePostsBulkRequest} request
+   * @return {!Uint8Array}
+   */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.postservice.CreatePostsBulkResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.postservice.CreatePostsBulkRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.RpcError, ?proto.postservice.CreatePostsBulkResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.postservice.CreatePostsBulkResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.postservice.PostServiceClient.prototype.createPostsBulk =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/postservice.PostService/CreatePostsBulk',
+      request,
+      metadata || {},
+      methodDescriptor_PostService_CreatePostsBulk,
+      callback);
+};
+
+
+/**
+ * @param {!proto.postservice.CreatePostsBulkRequest} request The
+ *     request proto
+ * @param {?Object<string, string>=} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.postservice.CreatePostsBulkResponse>}
+ *     Promise that resolves to the response
+ */
+proto.postservice.PostServicePromiseClient.prototype.createPostsBulk =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/postservice.PostService/CreatePostsBulk',
+      request,
+      metadata || {},
+      methodDescriptor_PostService_CreatePostsBulk);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.MethodDescriptor<
  *   !proto.postservice.GetPostsRequest,
  *   !proto.postservice.GetPostsResponse>}
  */

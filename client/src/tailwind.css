@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn{
+    transition-property: border-radius;
+    transition-duration: 500ms;
+    transition-timing-function: cubic-bezier(.29,-0.01,.59,1)
+}
+
+.rounded-full{
+    border-radius: 100px;
+}

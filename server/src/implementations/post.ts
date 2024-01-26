@@ -3,6 +3,8 @@ import { IPostServiceServer } from "../protos/out/post/post_grpc_pb";
 import {
   Comparison,
   CreatePostRequest,
+  CreatePostsBulkRequest,
+  CreatePostsBulkResponse,
   GetPostsRequest,
   GetPostsResponse,
   Post,
@@ -108,5 +110,24 @@ export class PostService implements IPostServiceServer {
     const response = new GetPostsResponse();
     response.setPostsList(posts);
     callback(null, response);
+  };
+
+  createPostsBulk: handleUnaryCall<
+    CreatePostsBulkRequest,
+    CreatePostsBulkResponse
+  > = async (call, callback) => {
+    const request = call.request.toObject();
+    console.log("createPostsBulk req: ", request);
+    try {
+      const result = await PostModel.insertMany(request.sourceList);
+      console.log(result);
+      callback(null, new CreatePostsBulkResponse());
+    } catch (err) {
+      console.log(err);
+      callback(
+        { code: status.INTERNAL, name: "", message: (err as any).message },
+        null
+      );
+    }
   };
 }

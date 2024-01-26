@@ -9,4 +9,5 @@ rm -r ../client/src/protos/src
 # copy the proto source files to the client folder 
 cp -r ./src/protos/src ../client/src/protos
 # run the client protogen script
-# ../client/protogen.sh
+cd ../client
+./protogen.sh
