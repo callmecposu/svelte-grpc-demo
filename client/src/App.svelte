@@ -12,7 +12,7 @@
 
     let viewportWidth = window.innerWidth;
 
-    $: colNum = Math.floor((viewportWidth - 250) / 300);
+    $: colNum = Math.floor((viewportWidth - 50) / (320 + 64));
 
     const getColumns = () => {
         let temp = [];
@@ -80,6 +80,9 @@
         <div class="flex-1">
             <a class="btn btn-ghost text-xl">I &lt;3 gRPC</a>
         </div>
+        <button class="btn btn-primary mx-4" on:click={sendGrpcRequest}
+            >FETCH!</button
+        >
         <div class="flex-none gap-2">
             <div class="form-control">
                 <input
@@ -108,6 +111,9 @@
         </button>
     </div>
 
+    <!-- <h1>Viewport width: {viewportWidth} px</h1>
+    <h1>Number of columns: {colNum}</h1> -->
+
     <!-- <div class="posts_container">
     {#each columns as col}
       <div class="posts_column">
@@ -119,11 +125,21 @@
       </div>
     {/each}
   </div> -->
-  <div class=" m-4 flex flex-wrap border-2 border-slate-400">
-	{#each posts as post}
-		<Post title={post.title}, body={post.body}, author={post.author}/>
-	{/each}
-  </div>
+    <div class=" m-4 flex flex-wrap justify-center">
+        {#each columns as col}
+            {#if col}
+                <div class=" flex flex-col">
+                    {#each col as post}
+                        <Post
+                            title={post.title}
+                            body={post.body}
+                            author={post.author}
+                        />
+                    {/each}
+                </div>
+            {/if}
+        {/each}
+    </div>
 </main>
 
 <style>
