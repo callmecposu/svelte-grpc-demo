@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .btn{
-    transition-property: border-radius;
+    transition-property: all;
     transition-duration: 500ms;
     transition-timing-function: cubic-bezier(.29,-0.01,.59,1)
 }

@@ -4,7 +4,7 @@
     export let title;
     export let body;
     export let author;
-    export let keywords;
+    export let keywordsList;
 </script>
 
 <div
@@ -17,7 +17,7 @@
         <p>{body}</p>
     </div>
     <div class="p-4">
-        {#each keywords as kw}
+        {#each keywordsList as kw}
         <div class="badge p-3 m-1 badge-neutral">#{kw}</div>
         {/each}
     </div>

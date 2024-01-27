@@ -11,6 +11,17 @@
 
     let viewportWidth = window.innerWidth;
 
+    const definedFilters = [
+        "No Filter",
+        "By Author",
+        "By Title",
+        "By Keywords",
+    ];
+
+    let filter = definedFilters[0];
+
+    let query = "";
+
     $: colNum = Math.floor((viewportWidth - 50) / (320 + 64));
 
     const getColumns = () => {
@@ -29,19 +40,19 @@
             title: "Director of Sales",
             body: "Phasellus in felis. Donec semper sapien a libero. Nam dui.\n\nProin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.\n\nInteger ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.",
             author: "Cory Bodle",
-            keywords: ["methodology", "Versatile", "motivating"],
+            keywordsList: ["methodology", "Versatile", "motivating"],
         },
         {
             title: "Nuclear Power Engineer",
             body: "Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi.",
             author: "Drake Rouf",
-            keywords: ["Triple-buffered", "analyzing", "Synergistic"],
+            keywordsList: ["Triple-buffered", "analyzing", "Synergistic"],
         },
         {
             title: "Mechanical Systems Engineer",
             body: "In quis justo. Maecenas rhoncus aliquam lacus. Morbi quis tortor id nulla ultrices aliquet.",
             author: "Samson Crimin",
-            keywords: [
+            keywordsList: [
                 "Organized",
                 "Networked",
                 "24 hour",
@@ -53,13 +64,13 @@
             title: "Social Worker",
             body: "Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.\n\nInteger tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.\n\nPraesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede.",
             author: "Benedikta Lockner",
-            keywords: ["Multi-tiered", "hierarchy", "interactive"],
+            keywordsList: ["Multi-tiered", "hierarchy", "interactive"],
         },
         {
             title: "Marketing Assistant",
             body: "Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst.\n\nMaecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat.",
             author: "Sapphire Gabel",
-            keywords: [
+            keywordsList: [
                 "systematic",
                 "multi-tasking",
                 "application",
@@ -71,13 +82,13 @@
             title: "Staff Accountant II",
             body: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin risus. Praesent lectus.\n\nVestibulum quam sapien, varius ut, blandit non, interdum in, ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis faucibus accumsan odio. Curabitur convallis.",
             author: "Al McCray",
-            keywords: ["Team-oriented", "Face to face", "Balanced"],
+            keywordsList: ["Team-oriented", "Face to face", "Balanced"],
         },
         {
             title: "Director of Sales",
             body: "Nullam porttitor lacus at turpis. Donec posuere metus vitae ipsum. Aliquam non mauris.",
             author: "Barnett Leveret",
-            keywords: [
+            keywordsList: [
                 "optimal",
                 "secured line",
                 "mission-critical",
@@ -89,7 +100,7 @@
             title: "Automation Specialist II",
             body: "Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus.",
             author: "Julio Welfair",
-            keywords: [
+            keywordsList: [
                 "foreground",
                 "Progressive",
                 "success",
@@ -101,7 +112,7 @@
             title: "Junior Executive",
             body: "Integer ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.",
             author: "Gusella Allewell",
-            keywords: [
+            keywordsList: [
                 "foreground",
                 "monitoring",
                 "Synergized",
@@ -113,49 +124,59 @@
             title: "Product Engineer",
             body: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin risus. Praesent lectus.",
             author: "Saxe Boome",
-            keywords: ["Extended", "client-driven", "explicit"],
+            keywordsList: ["Extended", "client-driven", "explicit"],
         },
         {
             title: "Senior Developer",
             body: "Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi.\n\nCras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque.\n\nQuisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus.",
             author: "Nana Worms",
-            keywords: ["Cloned", "access", "24/7"],
+            keywordsList: ["Cloned", "access", "24/7"],
         },
         {
             title: "Automation Specialist II",
             body: "Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.",
             author: "Annabelle Babbage",
-            keywords: ["regional", "Mandatory", "customer loyalty", "global"],
+            keywordsList: [
+                "regional",
+                "Mandatory",
+                "customer loyalty",
+                "global",
+            ],
         },
         {
             title: "Business Systems Development Analyst",
             body: "Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi.\n\nCras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque.\n\nQuisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus.",
             author: "Jeannette Jayne",
-            keywords: ["Enhanced", "Synergistic", "Open-source"],
+            keywordsList: ["Enhanced", "Synergistic", "Open-source"],
         },
         {
             title: "Quality Control Specialist",
             body: "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
             author: "Stanleigh Fayne",
-            keywords: ["Distributed", "homogeneous", "Profound", "focus group"],
+            keywordsList: [
+                "Distributed",
+                "homogeneous",
+                "Profound",
+                "focus group",
+            ],
         },
         {
             title: "Civil Engineer",
             body: "Nullam porttitor lacus at turpis. Donec posuere metus vitae ipsum. Aliquam non mauris.\n\nMorbi non lectus. Aliquam sit amet diam in magna bibendum imperdiet. Nullam orci pede, venenatis non, sodales sed, tincidunt eu, felis.\n\nFusce posuere felis sed lacus. Morbi sem mauris, laoreet ut, rhoncus aliquet, pulvinar sed, nisl. Nunc rhoncus dui vel sem.",
             author: "Panchito Braidman",
-            keywords: ["access", "migration", "cohesive"],
+            keywordsList: ["access", "migration", "cohesive"],
         },
         {
             title: "Marketing Assistant",
             body: "Phasellus in felis. Donec semper sapien a libero. Nam dui.\n\nProin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.",
             author: "Mike Grundell",
-            keywords: ["time-frame", "frame", "tangible"],
+            keywordsList: ["time-frame", "frame", "tangible"],
         },
         {
             title: "Chemical Engineer",
             body: "Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio.",
             author: "Rania Kiefer",
-            keywords: [
+            keywordsList: [
                 "Triple-buffered",
                 "exuding",
                 "matrix",
@@ -167,7 +188,7 @@
             title: "Internal Auditor",
             body: "Curabitur at ipsum ac tellus semper interdum. Mauris ullamcorper purus sit amet nulla. Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam.",
             author: "Donia Hebner",
-            keywords: [
+            keywordsList: [
                 "radical",
                 "Right-sized",
                 "capability",
@@ -179,7 +200,7 @@
             title: "Environmental Tech",
             body: "Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus.\n\nIn sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus.\n\nSuspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst.",
             author: "Tiphanie Smullin",
-            keywords: [
+            keywordsList: [
                 "system-worthy",
                 "Open-source",
                 "Synergistic",
@@ -188,8 +209,26 @@
         },
     ];
 
-    const sendGrpcRequest = () => {
+    const sendGrpcRequest = (filter, query) => {
         const req = new GetPostsRequest();
+        let reqQuery;
+        if (filter !== "No Filter") {
+            reqQuery = JSON.parse(query);
+        }
+        console.log(filter, reqQuery);
+        switch (filter) {
+            case "By Author":
+                req.setAuthor(reqQuery);
+                break;
+            case "By Title":
+                req.setTitle(reqQuery);
+                break;
+            case "By Keywords":
+                req.setKeywordsList(reqQuery);
+                break;
+            default:
+                break;
+        }
         grpcClient.getPosts(req, {}, (err, resp) => {
             if (err) {
                 console.log("error making a grpc request: ", err);
@@ -215,12 +254,30 @@
         <div class="flex-1">
             <a class="btn btn-ghost text-xl">I &lt;3 gRPC</a>
         </div>
-        <button class="btn btn-primary mx-4" on:click={sendGrpcRequest}
-            >FETCH!</button
-        >
+        <div class="dropdown dropdown-end mx-4">
+            <div tabindex="0" role="button" class="btn btn-outline">
+                {filter}
+            </div>
+            <ul
+                tabindex="0"
+                class="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-4"
+            >
+                {#each definedFilters as filterName}
+                    <li
+                        on:click={() => {
+                            console.log(filterName);
+                            filter = filterName;
+                        }}
+                    >
+                        <span>{filterName}</span>
+                    </li>
+                {/each}
+            </ul>
+        </div>
         <div class="flex-none gap-2">
             <div class="form-control">
                 <input
+                    bind:value={query}
                     type="text"
                     placeholder="Search"
                     class="input input-bordered w-24 md:w-auto bg-primary-content"
@@ -229,6 +286,9 @@
         </div>
         <button
             class="mx-2 btn btn-primary-content rounded-full hover:rounded-md"
+            on:click={() => {
+                sendGrpcRequest(filter, query);
+            }}
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -269,7 +329,7 @@
                             title={post.title}
                             body={post.body}
                             author={post.author}
-							keywords={post.keywords}
+                            keywordsList={post.keywordsList}
                         />
                     {/each}
                 </div>

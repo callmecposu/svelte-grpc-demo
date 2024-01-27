@@ -92,6 +92,14 @@ export class PostService implements IPostServiceServer {
             },
           }
         : { $match: {} },
+        // keywords filters
+        request.keywordsList.length > 0 ? {
+          $match:{
+            keywordsList:{
+              $all: request.keywordsList
+            }
+          }
+        } : {$match:{}}
     ];
     const results = await PostModel.aggregate(aggrOpts);
     console.log(results);
