@@ -57,6 +57,8 @@
     let posts = [];
 
     const sendGrpcRequest = (filter, query) => {
+		posts = []
+		curPage = 0;
         const req = new GetPostsRequest();
         let reqQuery;
         if (filter !== "No Filter") {
@@ -114,7 +116,7 @@
                     <li
                         on:click={() => {
                             console.log(filterName);
-                            filter = filterName;
+                            curFilter = filterName;
                         }}
                     >
                         <span>{filterName}</span>
