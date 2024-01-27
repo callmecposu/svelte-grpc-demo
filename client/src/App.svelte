@@ -56,9 +56,12 @@
 
     let posts = [];
 
+    let isLoading = true;
+
     const sendGrpcRequest = (filter, query) => {
-		posts = []
-		curPage = 0;
+        posts = [];
+        curPage = 0;
+        isLoading = true;
         const req = new GetPostsRequest();
         let reqQuery;
         if (filter !== "No Filter") {
@@ -84,6 +87,7 @@
             } else {
                 console.log("grpc server responded with: ", resp.toObject());
                 posts = resp.toObject().postsList;
+                isLoading = false;
             }
         });
     };
@@ -95,14 +99,12 @@
         });
         sendGrpcRequest("No Filter", "");
     });
-
-    export let name;
 </script>
 
 <main>
     <div class="navbar bg-base-100 bg-neutral rounded-br-md rounded-bl-md">
         <div class="flex-1">
-            <a class="btn btn-ghost text-xl">I &lt;3 gRPC</a>
+            <a href="/" class="btn btn-ghost text-xl">I &lt;3 gRPC</a>
         </div>
         <div class="dropdown dropdown-end mx-4">
             <div tabindex="0" role="button" class="btn btn-outline">
@@ -170,10 +172,12 @@
       </div>
     {/each}
   </div> -->
-    <div class=" m-4 flex flex-wrap justify-center">
-        {#if pages.length == 0}
-            <span class="loading loading-bars loading-lg"></span>
-        {:else}
+    {#if isLoading}
+        <div class=" w-full h-screen flex justify-center">
+            <div class=" loading loading-bars w-20"></div>
+        </div>
+    {:else if pages.length != 0}
+        <div class=" m-4 flex flex-wrap justify-center">
             {#each pages[curPage] as col}
                 {#if col}
                     <div class=" flex flex-col">
@@ -188,47 +192,63 @@
                     </div>
                 {/if}
             {/each}
-        {/if}
-    </div>
-    <div class="flex justify-center m-4">
-        <div class="join">
-            <button
-                class="join-item btn"
-                class:btn-disabled={curPage == 0}
-                on:click={() => {
-                    curPage = 0;
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                }}>«</button
-            >
-			<button
-                class="join-item btn"
-                class:btn-disabled={curPage == 0}
-                on:click={() => {
-                    curPage--;
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                }}>&lt;</button
-            >
-            <button class="join-item btn"
-                >Page {curPage + 1} / {pagesNum}</button
-            >
-            <button
-                class="join-item btn"
-                class:btn-disabled={curPage == pagesNum - 1}
-                on:click={() => {
-                    curPage++;
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                }}>&gt;</button
-            >
-			<button
-			class="join-item btn"
-			class:btn-disabled={curPage == pagesNum - 1}
-			on:click={() => {
-				curPage = pagesNum - 1;
-				window.scrollTo({ top: 0, behavior: "smooth" });
-			}}>»</button
-		>
         </div>
-    </div>
+    {:else}
+        <div class="hero min-h-screen bg-base-200">
+            <div class="hero-content text-center">
+                <div class="max-w-md">
+                    <h1 class="text-5xl font-bold">No Results &#x1F614;</h1>
+                    <p class="py-6">
+                        Unfortunately, there is no results for your query. <br/>
+						Please, try another one.
+                    </p>
+                    <a href="/" class="btn btn-primary">Back to All Posts</a>
+                </div>
+            </div>
+        </div>
+    {/if}
+
+    {#if !isLoading && pages.length != 0}
+        <div class="flex justify-center m-4">
+            <div class="join">
+                <button
+                    class="join-item btn"
+                    class:btn-disabled={curPage == 0}
+                    on:click={() => {
+                        curPage = 0;
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}>«</button
+                >
+                <button
+                    class="join-item btn"
+                    class:btn-disabled={curPage == 0}
+                    on:click={() => {
+                        curPage--;
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}>&lt;</button
+                >
+                <button class="join-item btn"
+                    >Page {curPage + 1} / {pagesNum}</button
+                >
+                <button
+                    class="join-item btn"
+                    class:btn-disabled={curPage == pagesNum - 1}
+                    on:click={() => {
+                        curPage++;
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}>&gt;</button
+                >
+                <button
+                    class="join-item btn"
+                    class:btn-disabled={curPage == pagesNum - 1}
+                    on:click={() => {
+                        curPage = pagesNum - 1;
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}>»</button
+                >
+            </div>
+        </div>
+    {/if}
 </main>
 
 <style>
