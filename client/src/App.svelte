@@ -1,12 +1,11 @@
 <script>
     import { GetPostsRequest } from "./protos/out/post/post_pb";
     import { PostServiceClient } from "./protos/out/post/post_grpc_web_pb";
-    import { onMount, afterUpdate } from "svelte";
+    import { onMount } from "svelte";
 
     import { _ } from "lodash";
 
     import Post from "./Post.svelte";
-    import { each } from "svelte/internal";
 
     var grpcClient = new PostServiceClient("http://localhost:13007");
 
@@ -27,29 +26,165 @@
 
     let posts = [
         {
-            title: "Payment Adjustment Coordinator",
-            body: "Cras mi pede, malesuada in, imperdiet et, commodo vulputate, justo. In blandit ultrices enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.\n\nProin interdum mauris non ligula pellentesque ultrices. Phasellus id sapien in sapien iaculis congue. Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl.\n\nAenean lectus. Pellentesque eget nunc. Donec quis orci eget orci vehicula condimentum.",
-            author: "Filberte Behagg",
+            title: "Director of Sales",
+            body: "Phasellus in felis. Donec semper sapien a libero. Nam dui.\n\nProin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.\n\nInteger ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.",
+            author: "Cory Bodle",
+            keywords: ["methodology", "Versatile", "motivating"],
         },
         {
-            title: "GIS Technical Architect",
-            body: "Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst.",
-            author: "Reynard Heskin",
+            title: "Nuclear Power Engineer",
+            body: "Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi.",
+            author: "Drake Rouf",
+            keywords: ["Triple-buffered", "analyzing", "Synergistic"],
         },
         {
-            title: "General Manager",
-            body: "Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat.\n\nCurabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.",
-            author: "Layla Thiolier",
+            title: "Mechanical Systems Engineer",
+            body: "In quis justo. Maecenas rhoncus aliquam lacus. Morbi quis tortor id nulla ultrices aliquet.",
+            author: "Samson Crimin",
+            keywords: [
+                "Organized",
+                "Networked",
+                "24 hour",
+                "Compatible",
+                "Object-based",
+            ],
         },
         {
-            title: "Research Assistant I",
-            body: "Sed ante. Vivamus tortor. Duis mattis egestas metus.\n\nAenean fermentum. Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh.",
-            author: "Clifford Bonass",
+            title: "Social Worker",
+            body: "Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.\n\nInteger tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.\n\nPraesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede.",
+            author: "Benedikta Lockner",
+            keywords: ["Multi-tiered", "hierarchy", "interactive"],
         },
         {
-            title: "Systems Administrator II",
-            body: "Phasellus sit amet erat. Nulla tempus. Vivamus in felis eu sapien cursus vestibulum.\n\nProin eu mi. Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem.",
-            author: "Hali Goodinge",
+            title: "Marketing Assistant",
+            body: "Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst.\n\nMaecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat.",
+            author: "Sapphire Gabel",
+            keywords: [
+                "systematic",
+                "multi-tasking",
+                "application",
+                "internet solution",
+                "project",
+            ],
+        },
+        {
+            title: "Staff Accountant II",
+            body: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin risus. Praesent lectus.\n\nVestibulum quam sapien, varius ut, blandit non, interdum in, ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis faucibus accumsan odio. Curabitur convallis.",
+            author: "Al McCray",
+            keywords: ["Team-oriented", "Face to face", "Balanced"],
+        },
+        {
+            title: "Director of Sales",
+            body: "Nullam porttitor lacus at turpis. Donec posuere metus vitae ipsum. Aliquam non mauris.",
+            author: "Barnett Leveret",
+            keywords: [
+                "optimal",
+                "secured line",
+                "mission-critical",
+                "Cross-platform",
+                "help-desk",
+            ],
+        },
+        {
+            title: "Automation Specialist II",
+            body: "Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus.",
+            author: "Julio Welfair",
+            keywords: [
+                "foreground",
+                "Progressive",
+                "success",
+                "matrices",
+                "Grass-roots",
+            ],
+        },
+        {
+            title: "Junior Executive",
+            body: "Integer ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.",
+            author: "Gusella Allewell",
+            keywords: [
+                "foreground",
+                "monitoring",
+                "Synergized",
+                "actuating",
+                "Networked",
+            ],
+        },
+        {
+            title: "Product Engineer",
+            body: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin risus. Praesent lectus.",
+            author: "Saxe Boome",
+            keywords: ["Extended", "client-driven", "explicit"],
+        },
+        {
+            title: "Senior Developer",
+            body: "Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi.\n\nCras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque.\n\nQuisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus.",
+            author: "Nana Worms",
+            keywords: ["Cloned", "access", "24/7"],
+        },
+        {
+            title: "Automation Specialist II",
+            body: "Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.",
+            author: "Annabelle Babbage",
+            keywords: ["regional", "Mandatory", "customer loyalty", "global"],
+        },
+        {
+            title: "Business Systems Development Analyst",
+            body: "Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi.\n\nCras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque.\n\nQuisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus.",
+            author: "Jeannette Jayne",
+            keywords: ["Enhanced", "Synergistic", "Open-source"],
+        },
+        {
+            title: "Quality Control Specialist",
+            body: "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
+            author: "Stanleigh Fayne",
+            keywords: ["Distributed", "homogeneous", "Profound", "focus group"],
+        },
+        {
+            title: "Civil Engineer",
+            body: "Nullam porttitor lacus at turpis. Donec posuere metus vitae ipsum. Aliquam non mauris.\n\nMorbi non lectus. Aliquam sit amet diam in magna bibendum imperdiet. Nullam orci pede, venenatis non, sodales sed, tincidunt eu, felis.\n\nFusce posuere felis sed lacus. Morbi sem mauris, laoreet ut, rhoncus aliquet, pulvinar sed, nisl. Nunc rhoncus dui vel sem.",
+            author: "Panchito Braidman",
+            keywords: ["access", "migration", "cohesive"],
+        },
+        {
+            title: "Marketing Assistant",
+            body: "Phasellus in felis. Donec semper sapien a libero. Nam dui.\n\nProin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.",
+            author: "Mike Grundell",
+            keywords: ["time-frame", "frame", "tangible"],
+        },
+        {
+            title: "Chemical Engineer",
+            body: "Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio.",
+            author: "Rania Kiefer",
+            keywords: [
+                "Triple-buffered",
+                "exuding",
+                "matrix",
+                "fresh-thinking",
+                "Horizontal",
+            ],
+        },
+        {
+            title: "Internal Auditor",
+            body: "Curabitur at ipsum ac tellus semper interdum. Mauris ullamcorper purus sit amet nulla. Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam.",
+            author: "Donia Hebner",
+            keywords: [
+                "radical",
+                "Right-sized",
+                "capability",
+                "grid-enabled",
+                "Pre-emptive",
+            ],
+        },
+        {
+            title: "Environmental Tech",
+            body: "Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus.\n\nIn sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus.\n\nSuspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst.",
+            author: "Tiphanie Smullin",
+            keywords: [
+                "system-worthy",
+                "Open-source",
+                "Synergistic",
+                "interactive",
+            ],
         },
     ];
 
@@ -134,6 +269,7 @@
                             title={post.title}
                             body={post.body}
                             author={post.author}
+							keywords={post.keywords}
                         />
                     {/each}
                 </div>

@@ -1,7 +1,10 @@
 <script>
+    import { each } from "svelte/internal";
+
     export let title;
     export let body;
     export let author;
+    export let keywords;
 </script>
 
 <div
@@ -12,6 +15,11 @@
     </div>
     <div class="p-4">
         <p>{body}</p>
+    </div>
+    <div class="p-4">
+        {#each keywords as kw}
+        <div class="badge p-3 m-1 badge-neutral">#{kw}</div>
+        {/each}
     </div>
     <div class="p-4">
         <div class="avatar placeholder h-8 w-8 m-1">
