@@ -6,6 +6,7 @@
     import { _ } from "lodash";
 
     import Post from "./Post.svelte";
+    import { get_spread_update } from "svelte/internal";
 
     var grpcClient = new PostServiceClient("http://localhost:13007");
 
@@ -18,196 +19,42 @@
         "By Keywords",
     ];
 
-    let filter = definedFilters[0];
+    let curFilter = definedFilters[0];
 
-    let query = "";
+    let curQuery = "";
+
+    let limit = 20;
 
     $: colNum = Math.floor((viewportWidth - 50) / (320 + 64));
 
-    const getColumns = () => {
+    const getColumns = (postsChunk) => {
         let temp = [];
         for (let i = 0; i < colNum; i++) {
-            temp.push(_.chunk(posts, Math.ceil(posts.length / colNum))[i]);
+            temp.push(
+                _.chunk(postsChunk, Math.ceil(postsChunk.length / colNum))[i]
+            );
         }
-        console.log(temp);
+        console.log("columns: ", temp);
         return temp;
     };
 
-    $: columns = getColumns(posts, colNum);
+    $: pagesNum = Math.ceil(posts.length / limit);
 
-    let posts = [
-        {
-            title: "Director of Sales",
-            body: "Phasellus in felis. Donec semper sapien a libero. Nam dui.\n\nProin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.\n\nInteger ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.",
-            author: "Cory Bodle",
-            keywordsList: ["methodology", "Versatile", "motivating"],
-        },
-        {
-            title: "Nuclear Power Engineer",
-            body: "Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi.",
-            author: "Drake Rouf",
-            keywordsList: ["Triple-buffered", "analyzing", "Synergistic"],
-        },
-        {
-            title: "Mechanical Systems Engineer",
-            body: "In quis justo. Maecenas rhoncus aliquam lacus. Morbi quis tortor id nulla ultrices aliquet.",
-            author: "Samson Crimin",
-            keywordsList: [
-                "Organized",
-                "Networked",
-                "24 hour",
-                "Compatible",
-                "Object-based",
-            ],
-        },
-        {
-            title: "Social Worker",
-            body: "Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.\n\nInteger tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.\n\nPraesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede.",
-            author: "Benedikta Lockner",
-            keywordsList: ["Multi-tiered", "hierarchy", "interactive"],
-        },
-        {
-            title: "Marketing Assistant",
-            body: "Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst.\n\nMaecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat.",
-            author: "Sapphire Gabel",
-            keywordsList: [
-                "systematic",
-                "multi-tasking",
-                "application",
-                "internet solution",
-                "project",
-            ],
-        },
-        {
-            title: "Staff Accountant II",
-            body: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin risus. Praesent lectus.\n\nVestibulum quam sapien, varius ut, blandit non, interdum in, ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis faucibus accumsan odio. Curabitur convallis.",
-            author: "Al McCray",
-            keywordsList: ["Team-oriented", "Face to face", "Balanced"],
-        },
-        {
-            title: "Director of Sales",
-            body: "Nullam porttitor lacus at turpis. Donec posuere metus vitae ipsum. Aliquam non mauris.",
-            author: "Barnett Leveret",
-            keywordsList: [
-                "optimal",
-                "secured line",
-                "mission-critical",
-                "Cross-platform",
-                "help-desk",
-            ],
-        },
-        {
-            title: "Automation Specialist II",
-            body: "Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus.",
-            author: "Julio Welfair",
-            keywordsList: [
-                "foreground",
-                "Progressive",
-                "success",
-                "matrices",
-                "Grass-roots",
-            ],
-        },
-        {
-            title: "Junior Executive",
-            body: "Integer ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.",
-            author: "Gusella Allewell",
-            keywordsList: [
-                "foreground",
-                "monitoring",
-                "Synergized",
-                "actuating",
-                "Networked",
-            ],
-        },
-        {
-            title: "Product Engineer",
-            body: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin risus. Praesent lectus.",
-            author: "Saxe Boome",
-            keywordsList: ["Extended", "client-driven", "explicit"],
-        },
-        {
-            title: "Senior Developer",
-            body: "Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi.\n\nCras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque.\n\nQuisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus.",
-            author: "Nana Worms",
-            keywordsList: ["Cloned", "access", "24/7"],
-        },
-        {
-            title: "Automation Specialist II",
-            body: "Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.",
-            author: "Annabelle Babbage",
-            keywordsList: [
-                "regional",
-                "Mandatory",
-                "customer loyalty",
-                "global",
-            ],
-        },
-        {
-            title: "Business Systems Development Analyst",
-            body: "Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi.\n\nCras non velit nec nisi vulputate nonummy. Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque.\n\nQuisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus.",
-            author: "Jeannette Jayne",
-            keywordsList: ["Enhanced", "Synergistic", "Open-source"],
-        },
-        {
-            title: "Quality Control Specialist",
-            body: "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus vestibulum sagittis sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.",
-            author: "Stanleigh Fayne",
-            keywordsList: [
-                "Distributed",
-                "homogeneous",
-                "Profound",
-                "focus group",
-            ],
-        },
-        {
-            title: "Civil Engineer",
-            body: "Nullam porttitor lacus at turpis. Donec posuere metus vitae ipsum. Aliquam non mauris.\n\nMorbi non lectus. Aliquam sit amet diam in magna bibendum imperdiet. Nullam orci pede, venenatis non, sodales sed, tincidunt eu, felis.\n\nFusce posuere felis sed lacus. Morbi sem mauris, laoreet ut, rhoncus aliquet, pulvinar sed, nisl. Nunc rhoncus dui vel sem.",
-            author: "Panchito Braidman",
-            keywordsList: ["access", "migration", "cohesive"],
-        },
-        {
-            title: "Marketing Assistant",
-            body: "Phasellus in felis. Donec semper sapien a libero. Nam dui.\n\nProin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.",
-            author: "Mike Grundell",
-            keywordsList: ["time-frame", "frame", "tangible"],
-        },
-        {
-            title: "Chemical Engineer",
-            body: "Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio.",
-            author: "Rania Kiefer",
-            keywordsList: [
-                "Triple-buffered",
-                "exuding",
-                "matrix",
-                "fresh-thinking",
-                "Horizontal",
-            ],
-        },
-        {
-            title: "Internal Auditor",
-            body: "Curabitur at ipsum ac tellus semper interdum. Mauris ullamcorper purus sit amet nulla. Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam.",
-            author: "Donia Hebner",
-            keywordsList: [
-                "radical",
-                "Right-sized",
-                "capability",
-                "grid-enabled",
-                "Pre-emptive",
-            ],
-        },
-        {
-            title: "Environmental Tech",
-            body: "Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus.\n\nIn sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus.\n\nSuspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst.",
-            author: "Tiphanie Smullin",
-            keywordsList: [
-                "system-worthy",
-                "Open-source",
-                "Synergistic",
-                "interactive",
-            ],
-        },
-    ];
+    const getPages = () => {
+        const chunks = _.chunk(posts, limit);
+        let temp = [];
+        for (let i = 0; i < pagesNum; i++) {
+            temp.push(getColumns(chunks[i]));
+        }
+        console.log("pages: ", temp);
+        return temp;
+    };
+
+    $: pages = getPages(posts, colNum);
+
+    let curPage = 0;
+
+    let posts = [];
 
     const sendGrpcRequest = (filter, query) => {
         const req = new GetPostsRequest();
@@ -244,6 +91,7 @@
         window.addEventListener("resize", () => {
             viewportWidth = window.innerWidth;
         });
+        sendGrpcRequest("No Filter", "");
     });
 
     export let name;
@@ -256,7 +104,7 @@
         </div>
         <div class="dropdown dropdown-end mx-4">
             <div tabindex="0" role="button" class="btn btn-outline">
-                {filter}
+                {curFilter}
             </div>
             <ul
                 tabindex="0"
@@ -277,7 +125,7 @@
         <div class="flex-none gap-2">
             <div class="form-control">
                 <input
-                    bind:value={query}
+                    bind:value={curQuery}
                     type="text"
                     placeholder="Search"
                     class="input input-bordered w-24 md:w-auto bg-primary-content"
@@ -287,7 +135,7 @@
         <button
             class="mx-2 btn btn-primary-content rounded-full hover:rounded-md"
             on:click={() => {
-                sendGrpcRequest(filter, query);
+                sendGrpcRequest(curFilter, curQuery);
             }}
         >
             <svg
@@ -321,20 +169,63 @@
     {/each}
   </div> -->
     <div class=" m-4 flex flex-wrap justify-center">
-        {#each columns as col}
-            {#if col}
-                <div class=" flex flex-col">
-                    {#each col as post}
-                        <Post
-                            title={post.title}
-                            body={post.body}
-                            author={post.author}
-                            keywordsList={post.keywordsList}
-                        />
-                    {/each}
-                </div>
-            {/if}
-        {/each}
+        {#if pages.length == 0}
+            <span class="loading loading-bars loading-lg"></span>
+        {:else}
+            {#each pages[curPage] as col}
+                {#if col}
+                    <div class=" flex flex-col">
+                        {#each col as post}
+                            <Post
+                                title={post.title}
+                                body={post.body}
+                                author={post.author}
+                                keywordsList={post.keywordsList}
+                            />
+                        {/each}
+                    </div>
+                {/if}
+            {/each}
+        {/if}
+    </div>
+    <div class="flex justify-center m-4">
+        <div class="join">
+            <button
+                class="join-item btn"
+                class:btn-disabled={curPage == 0}
+                on:click={() => {
+                    curPage = 0;
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                }}>«</button
+            >
+			<button
+                class="join-item btn"
+                class:btn-disabled={curPage == 0}
+                on:click={() => {
+                    curPage--;
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                }}>&lt;</button
+            >
+            <button class="join-item btn"
+                >Page {curPage + 1} / {pagesNum}</button
+            >
+            <button
+                class="join-item btn"
+                class:btn-disabled={curPage == pagesNum - 1}
+                on:click={() => {
+                    curPage++;
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                }}>&gt;</button
+            >
+			<button
+			class="join-item btn"
+			class:btn-disabled={curPage == pagesNum - 1}
+			on:click={() => {
+				curPage = pagesNum - 1;
+				window.scrollTo({ top: 0, behavior: "smooth" });
+			}}>»</button
+		>
+        </div>
     </div>
 </main>
 
